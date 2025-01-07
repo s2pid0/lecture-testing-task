@@ -8,7 +8,6 @@ int main() {
 
     push(&stack, 10);
     push(&stack, 20);
-    push(&stack, 30);
 
     printf("After pushing elements:\n");
     traverseStack(&stack);
