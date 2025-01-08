@@ -15,12 +15,8 @@ void initStack(Stack* stack) {
 }
 
 void destroyStack(Stack* stack) {
-    Node* current = stack->top;
-    while (current != NULL) {
-        Node *tmp = current;
-        current = current->next;
-	    free(tmp);
-    }
+    while (stack->top != NULL)
+        pop(stack);
 }
 
 void push(Stack* stack, int data) {
@@ -34,6 +30,8 @@ void pop(Stack* stack) {
     if (temp!=NULL) {
         stack->top = stack->top->next;
         free(temp);
+    } else {
+        return;
     }
 }
 
@@ -43,6 +41,7 @@ Node* searchByValue(Stack* stack, int value) {
         if (current->data == value) {
             return current;
         }
+        current = current->next;
     }
     return NULL;
 }

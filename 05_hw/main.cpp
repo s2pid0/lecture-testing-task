@@ -29,6 +29,9 @@ int main() {
         printf("Top element: %d\n", topElement->data);
     }
 
+    destroyStack(&stack);
+    traverseStack(&stack);
+
     return 0;
 }
 
