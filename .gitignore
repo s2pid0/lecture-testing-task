@@ -1,5 +1,4 @@
 .vs
-05_hw/.idea
-05_hw/cmake-build-debug
-05_hw/googletest
-05_hw/out
+05_hw/.vscode
+05_hw/benchmark
+05_hw/build
