@@ -8,6 +8,7 @@ int main() {
 
     push(&stack, 10);
     push(&stack, 20);
+    push(&stack, 30);
 
     printf("After pushing elements:\n");
     traverseStack(&stack);
@@ -29,8 +30,6 @@ int main() {
         printf("Top element: %d\n", topElement->data);
     }
 
-    destroyStack(&stack);
-    traverseStack(&stack);
 
     return 0;
 }

@@ -22,7 +22,6 @@ TEST_F(StackTest, initStackTest) {
     Stack f;
     initStack(&f);
     EXPECT_EQ(isEmpty(&f), true);
-    delete &f;
 }
 
 TEST_F(StackTest, isEmptyTest) {

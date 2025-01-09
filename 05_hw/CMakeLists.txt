@@ -2,20 +2,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_options(-std=c++17 -D_GLIBCXX_USE_C99)
+add_compile_options(-std=c++17 -D_GLIBCXX_USE_C99 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
 
 cmake_minimum_required(VERSION 3.10)
 project(stack)
-
-# Указываем путь к заголовкам GTest
-# include_directories("C:/msys64/mingw64/include")
-
-# # Указываем путь к библиотекам GTest
-# link_directories("C:/msys64/mingw64/lib")
-
-# Линкуем GTest
-# target_link_libraries(tests PRIVATE gtest gtest_main)
-
 
 
 find_package(GTest REQUIRED)
@@ -30,16 +20,29 @@ add_library(stack stack.cpp)
 add_executable(main main.cpp)
 target_link_libraries(main stack)
 
-
 add_executable(tests tests.cpp)
 target_link_libraries(tests PRIVATE gtest stack)
 target_link_libraries(stack PRIVATE gcov)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(tests PRIVATE --coverage)
-    target_link_options(tests PRIVATE --coverage)
-    target_compile_options(stack PRIVATE --coverage)
-    target_link_options(stack PRIVATE --coverage)
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    find_program(CLANG_EXECUTABLE "C:/msys64/mingw64/bin/clang.exe")
+    add_custom_target(analyze
+        COMMAND
+          analyze-build --cdb ${PROJECT_BINARY_DIR}/compile_commands.json
+            --use-analyzer ${CLANG_EXECUTABLE}
+            --output ${PROJECT_BINARY_DIR}/analyzer
+    )
+endif()
+
+target_compile_options(tests PRIVATE --coverage)
+target_link_options(tests PRIVATE --coverage)
+target_compile_options(stack PRIVATE --coverage)
+target_link_options(stack PRIVATE --coverage)
+
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(tests PRIVATE -fsanitize=address -fno-omit-frame-pointer)
+    target_link_options(tests PRIVATE -fsanitize=address)
 endif()
 
 enable_testing()
